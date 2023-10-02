@@ -11,7 +11,7 @@ def main():
     # Access environment variables
     token = os.getenv('NOTION_KEY')
     database_id = os.getenv('NOTION_PAGE_ID')
-    path_to_document = 'data/Journal.docx'
+    path_to_document = 'data/2023.docx'
 
     # Extract entries from the Word document
     extractor = WordExtractor(path_to_document)
@@ -20,6 +20,7 @@ def main():
     # Upload entries to Notion
     notion = NotionAPI(token, database_id)
     notion.upload_entries(entries)
+    # notion.readDatabase()
 
 
 if __name__ == "__main__":

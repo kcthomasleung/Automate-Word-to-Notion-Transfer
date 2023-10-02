@@ -54,7 +54,7 @@ class NotionAPI:
     def readDatabase(self):
         res = requests.request("POST", self.notion_query_url, headers=self.headers)
         data = res.json()
-        json_string = json.dumps(data["results"], indent=4)
+        json_string = json.dumps(data, indent=4)
         print(res.status_code)
         print(json_string)
 
@@ -70,7 +70,7 @@ class NotionAPI:
                 print(f"Entry already exists for {formatted_date_string}, skipping.")
                 continue
 
-            print(entry)
+            print(f"uploading {entry['date'], entry['title']}...")
 
             # Split content into multiple blocks if it exceeds the limit
             children_blocks = self.split_content_into_blocks(entry['content'])
@@ -84,9 +84,15 @@ class NotionAPI:
                             'start': formatted_date_string
                         }
                     },
+                    'Name': {
+                        'type': 'title',
+                        'title': [{'text': {'content': entry['title']}}] if entry.get('title') else []
+                    }
                 },
                 "children": children_blocks
             }
             response = requests.post(self.notion_api_url, json=page_properties, headers=self.headers)
             if response.status_code != 200:
                 print(f"Failed to upload entry: {entry['date']}. Error: {response.text}")
+            elif response.status_code == 200:
+                print(f"Successfully uploaded entry: {entry['date'], entry['title']}")

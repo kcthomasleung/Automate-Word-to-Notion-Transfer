@@ -1,7 +1,7 @@
 import unittest
 from modules.word_extractor import WordExtractor
 
-word_file_path = '../data/Journal.docx'
+word_file_path = '../data/2023.docx'
 
 
 class TestWordExtractor(unittest.TestCase):
@@ -13,7 +13,9 @@ class TestWordExtractor(unittest.TestCase):
         # Loop through each entry in entries
         for entry in entries:
             print("Date:", entry.get('date'))
+            print("Title:", entry.get('title'))
             print("Content:", entry.get('content'))
+            print('-------------------------------------------')
             # Check if 'date' and 'content' keys exist and have values
             self.assertIn('date', entry, "Entry should have a 'date' field")
             self.assertIn('content', entry, "Entry should have a 'content' field")
